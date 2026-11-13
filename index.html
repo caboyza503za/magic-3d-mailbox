@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#07091A" />
+    <title>กล่องจดหมายเวทมนตร์ 3 มิติ</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23ff4f87' d='M32 56S8 40 8 22a14 14 0 0 1 24-9.8A14 14 0 0 1 56 22c0 18-24 34-24 34z'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/magic-3d-mailbox/assets/index-D8T3Ibih.js"></script>
+    <link rel="stylesheet" crossorigin href="/magic-3d-mailbox/assets/index-CVAN2Z8l.css">
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene-canvas" aria-label="ฉากกล่องจดหมาย 3 มิติในสวนเวทมนตร์"></canvas>
+
+      <div id="loading-veil" class="loading-veil" aria-live="polite">
+        <div class="loading-orb"></div>
+        <p class="loading-text">กำลังจุดแสงออโรร่า...</p>
+      </div>
+
+      <div class="hud-top">
+        <button
+          id="audio-toggle"
+          class="icon-btn"
+          type="button"
+          aria-label="เปิดหรือปิดเสียงดนตรี"
+          aria-pressed="false"
+        >
+          <svg class="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M11 5L6 9H2v6h4l5 4V5z" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </svg>
+          <svg class="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M11 5L6 9H2v6h4l5 4V5z" />
+            <line x1="23" y1="9" x2="17" y2="15" />
+            <line x1="17" y1="9" x2="23" y2="15" />
+          </svg>
+        </button>
+      </div>
+
+      <main class="finale-stage" aria-live="polite">
+        <section id="finale-card" class="finale-card" aria-hidden="true">
+          <div class="finale-card__glow" aria-hidden="true"></div>
+          <div class="finale-card__frame">
+            <h1 class="finale-message">รักนะจุ๊บๆ</h1>
+          </div>
+        </section>
+      </main>
+
+      <div class="hud-bottom">
+        <p id="hint-pill" class="hint-pill">หมุนชมรอบๆ หรือแตะที่กล่องจดหมาย</p>
+        <div class="action-row">
+          <button id="replay-btn" class="replay-btn" type="button" hidden>
+            เปิดดูอีกรอบ
+          </button>
+        </div>
+      </div>
+
+      <div id="webgl-fallback" class="webgl-fallback" hidden>
+        <div class="fallback-box">
+          <p class="fallback-title">อุปกรณ์นี้ไม่รองรับกราฟฟิค 3 มิติ (WebGL)</p>
+          <p class="fallback-sub">รักนะจุ๊บๆ</p>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
