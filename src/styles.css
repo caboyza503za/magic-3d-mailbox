@@ -1,0 +1,375 @@
+:root {
+  --sky-deep: #07091a;
+  --nebula-horizon: #111638;
+  --aurora-emerald: #2ce6c8;
+  --aurora-amethyst: #9d6bff;
+  --aurora-rose: #ff70b8;
+  --mailbox-plum: #1e1842;
+  --rose-gold: #f5c28b;
+  --heart-crimson: #ff4f87;
+  --crystal-ivory: #fff7fa;
+
+  --font-display: 'Mali', 'Noto Sans Thai', system-ui, -apple-system, sans-serif;
+  --font-ui: 'Noto Sans Thai', system-ui, -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background-color: var(--sky-deep);
+  color: var(--crystal-ivory);
+  font-family: var(--font-ui);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 35%, var(--nebula-horizon), var(--sky-deep) 78%);
+}
+
+#scene-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  outline: none;
+}
+
+/* Loading Veil */
+.loading-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: radial-gradient(circle at 50% 45%, #161c46 0%, var(--sky-deep) 78%);
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.loading-veil.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading-orb {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--aurora-emerald), var(--aurora-amethyst), var(--aurora-rose), var(--aurora-emerald));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  animation: spinOrb 1.2s linear infinite;
+  box-shadow: 0 0 24px rgba(157, 107, 255, 0.45);
+}
+
+.loading-text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: rgba(255, 247, 250, 0.85);
+}
+
+@keyframes spinOrb {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Top HUD */
+.hud-top {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  right: max(14px, env(safe-area-inset-right));
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 194, 139, 0.35);
+  background: rgba(14, 18, 46, 0.54);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--crystal-ivory);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 6px 20px rgba(4, 6, 20, 0.45);
+}
+
+.icon-btn:hover {
+  border-color: rgba(245, 194, 139, 0.72);
+  background: rgba(28, 30, 74, 0.72);
+}
+
+.icon-btn:active {
+  transform: scale(0.93);
+}
+
+.icon-btn:focus-visible,
+.replay-btn:focus-visible {
+  outline: 2px solid var(--rose-gold);
+  outline-offset: 3px;
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-btn .icon-sound-off {
+  display: none;
+}
+
+.icon-btn[aria-pressed='true'] .icon-sound-on {
+  display: none;
+}
+
+.icon-btn[aria-pressed='true'] .icon-sound-off {
+  display: block;
+  color: rgba(255, 247, 250, 0.65);
+}
+
+/* Finale Stage & Crystal Message Card */
+.finale-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 20px max(144px, calc(env(safe-area-inset-bottom) + 134px));
+}
+
+.finale-card {
+  position: relative;
+  opacity: 0;
+  transform: translateY(24px) scale(0.9);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.finale-card.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.finale-card__glow {
+  position: absolute;
+  inset: -18px;
+  border-radius: 36px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 112, 184, 0.32) 0%,
+    rgba(157, 107, 255, 0.22) 48%,
+    rgba(44, 230, 200, 0) 75%
+  );
+  filter: blur(18px);
+  z-index: -1;
+  animation: pulseAura 3.4s ease-in-out infinite;
+}
+
+@keyframes pulseAura {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.finale-card__frame {
+  position: relative;
+  padding: 20px 36px;
+  border-radius: 26px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 247, 250, 0.16) 0%,
+    rgba(30, 24, 66, 0.68) 55%,
+    rgba(17, 22, 56, 0.78) 100%
+  );
+  border: 1.5px solid rgba(245, 194, 139, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 18px 48px rgba(4, 6, 22, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 0 32px rgba(255, 112, 184, 0.25);
+  text-align: center;
+}
+
+.finale-message {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 8.2vw, 3.25rem);
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  background: linear-gradient(120deg, #fff7fa 15%, #ffd9e8 48%, #f5c28b 88%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 3px 14px rgba(255, 79, 135, 0.48));
+}
+
+/* Bottom HUD */
+.hud-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: max(18px, env(safe-area-inset-bottom) + 12px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  pointer-events: none;
+}
+
+.hint-pill {
+  margin: 0;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(12, 16, 42, 0.62);
+  border: 1px solid rgba(245, 194, 139, 0.32);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: rgba(255, 247, 250, 0.92);
+  font-size: clamp(0.86rem, 3.2vw, 0.96rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(4, 6, 20, 0.42);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.hint-pill.is-hidden {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.action-row {
+  display: flex;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.replay-btn {
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 194, 139, 0.5);
+  background: rgba(30, 24, 66, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--rose-gold);
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(4, 6, 20, 0.45);
+  transition: transform 0.2s ease, background-color 0.25s ease, border-color 0.25s ease, opacity 0.4s ease;
+}
+
+.replay-btn:hover {
+  background: rgba(48, 38, 98, 0.85);
+  border-color: var(--rose-gold);
+}
+
+.replay-btn:active {
+  transform: scale(0.95);
+}
+
+.replay-btn[hidden] {
+  display: none;
+}
+
+/* WebGL Fallback */
+.webgl-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(circle at 50% 45%, var(--nebula-horizon), var(--sky-deep));
+}
+
+.webgl-fallback[hidden] {
+  display: none;
+}
+
+.fallback-box {
+  padding: 28px 32px;
+  border-radius: 24px;
+  border: 1px solid rgba(245, 194, 139, 0.45);
+  background: rgba(20, 24, 58, 0.85);
+  text-align: center;
+}
+
+.fallback-title {
+  margin: 0 0 12px;
+  color: rgba(255, 247, 250, 0.8);
+  font-size: 0.95rem;
+}
+
+.fallback-sub {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--rose-gold);
+}
+
+@media (min-width: 768px) {
+  .finale-stage {
+    padding-bottom: 154px;
+  }
+
+  .finale-card__frame {
+    padding: 22px 46px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-orb,
+  .finale-card__glow {
+    animation: none;
+  }
+
+  .finale-card,
+  .hint-pill,
+  .loading-veil {
+    transition-duration: 0.2s;
+  }
+}
